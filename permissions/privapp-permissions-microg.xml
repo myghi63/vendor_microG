@@ -22,6 +22,11 @@
         <permission name="android.permission.INTERACT_ACROSS_USERS"/>
         <permission name="android.permission.START_ACTIVITIES_FROM_BACKGROUND"/>
         <permission name="android.permission.MANAGE_USB"/>
+        <!-- Android 15/16 Credential Manager (signature|privileged): missing
+             these boots the phone into a loop on user builds
+             (ro.control_privapp_permissions=enforce). -->
+        <permission name="android.permission.PROVIDE_REMOTE_CREDENTIALS"/>
+        <permission name="android.permission.PROVIDE_DEFAULT_ENABLED_CREDENTIAL_SERVICE"/>
     </privapp-permissions>
 
     <!-- microG Companion / Play Store proxy (Phonesky) -->
