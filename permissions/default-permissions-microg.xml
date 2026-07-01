@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Auto-grant the runtime (dangerous) permissions microG needs so the user does
+    not have to walk the in-app permission wizard. fixed="false" lets the user
+    still revoke them in Settings. Landed at /product/etc/default-permissions/.
+-->
+<exceptions>
+    <exception package="com.google.android.gms">
+        <permission name="android.permission.ACCESS_FINE_LOCATION" fixed="false"/>
+        <permission name="android.permission.ACCESS_COARSE_LOCATION" fixed="false"/>
+        <permission name="android.permission.ACCESS_BACKGROUND_LOCATION" fixed="false"/>
+        <permission name="android.permission.READ_PHONE_STATE" fixed="false"/>
+        <permission name="android.permission.GET_ACCOUNTS" fixed="false"/>
+        <permission name="android.permission.READ_CONTACTS" fixed="false"/>
+        <permission name="android.permission.POST_NOTIFICATIONS" fixed="false"/>
+        <permission name="android.permission.RECEIVE_SMS" fixed="false"/>
+    </exception>
+    <exception package="com.android.vending">
+        <permission name="android.permission.POST_NOTIFICATIONS" fixed="false"/>
+        <permission name="android.permission.ACCESS_COARSE_LOCATION" fixed="false"/>
+    </exception>
+</exceptions>

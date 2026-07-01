@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Privileged-permission allowlist for the microG priv-apps. Only the
+    signature|privileged permissions each app actually requests are listed
+    (derived from the shipped APKs). Normal/appop perms (REQUEST_INSTALL_PACKAGES,
+    INTERACT_ACROSS_PROFILES, QUERY_ALL_PACKAGES) are not privileged and are
+    granted without an allowlist entry. FAKE_PACKAGE_SIGNATURE is intentionally
+    omitted: crDroid spoofs the Google signature via package name + metadata in
+    ComputerEngine, not via that permission.
+-->
+<permissions>
+    <!-- microG Services / GmsCore -->
+    <privapp-permissions package="com.google.android.gms">
+        <permission name="android.permission.INSTALL_LOCATION_PROVIDER"/>
+        <permission name="android.permission.LOCATION_HARDWARE"/>
+        <permission name="android.permission.UPDATE_APP_OPS_STATS"/>
+        <permission name="android.permission.UPDATE_DEVICE_STATS"/>
+        <permission name="android.permission.CHANGE_DEVICE_IDLE_TEMP_WHITELIST"/>
+        <permission name="android.permission.NETWORK_SCAN"/>
+        <permission name="android.permission.MODIFY_PHONE_STATE"/>
+        <permission name="android.permission.WATCH_APPOPS"/>
+        <permission name="android.permission.INTERACT_ACROSS_USERS"/>
+        <permission name="android.permission.START_ACTIVITIES_FROM_BACKGROUND"/>
+        <permission name="android.permission.MANAGE_USB"/>
+    </privapp-permissions>
+
+    <!-- microG Companion / Play Store proxy (Phonesky) -->
+    <privapp-permissions package="com.android.vending">
+        <permission name="android.permission.INSTALL_PACKAGES"/>
+        <permission name="android.permission.DELETE_PACKAGES"/>
+        <permission name="android.permission.INTERACT_ACROSS_USERS"/>
+    </privapp-permissions>
+</permissions>

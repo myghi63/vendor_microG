@@ -1,0 +1,52 @@
+// microG prebuilts (GmsCore, Companion/Phonesky, GsfProxy).
+//
+// GmsCore and Phonesky are privileged; their signature|privileged permissions
+// are allowlisted in permissions/privapp-permissions-microg.xml (a privileged
+// app requesting such a permission without an allowlist entry fails to boot on
+// user builds). Both ship compressed dex and are dual-signed, so the dex cannot
+// be uncompressed without invalidating the v2/v3 signature -> skip the
+// presigned-APK checks and let PackageManager extract the dex at dexopt time.
+//
+// GsfProxy is the SaeedDev94 fork (targetSdk 36, uncompressed dex). It only
+// proxies the legacy GSF provider and needs no privileged permissions, so it is
+// installed as a regular (non-privileged) app.
+
+android_app_import {
+    name: "GmsCore",
+    owner: "microg",
+    apk: "proprietary/product/priv-app/GmsCore/GmsCore.apk",
+    presigned: true,
+    preprocessed: true,
+    privileged: true,
+    product_specific: true,
+    dex_preopt: {
+        enabled: false,
+    },
+    skip_preprocessed_apk_checks: true,
+}
+
+android_app_import {
+    name: "Phonesky",
+    owner: "microg",
+    apk: "proprietary/product/priv-app/Phonesky/Phonesky.apk",
+    presigned: true,
+    preprocessed: true,
+    privileged: true,
+    product_specific: true,
+    dex_preopt: {
+        enabled: false,
+    },
+    skip_preprocessed_apk_checks: true,
+}
+
+android_app_import {
+    name: "GsfProxy",
+    owner: "microg",
+    apk: "proprietary/product/app/GsfProxy/GsfProxy.apk",
+    presigned: true,
+    preprocessed: true,
+    product_specific: true,
+    dex_preopt: {
+        enabled: false,
+    },
+}
