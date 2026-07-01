@@ -75,6 +75,10 @@ android_app_import {
     dex_preopt: {
         enabled: false,
     },
+    // Aurora ships compressed JNI libs (extractNativeLibs=true); the presigned
+    // check wants them stored+aligned. Can't repack without breaking the
+    // signature, so skip the check and let PackageManager extract at install.
+    skip_preprocessed_apk_checks: true,
 }
 
 android_app_import {
