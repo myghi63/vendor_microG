@@ -6,14 +6,32 @@ system apps with the permission allowlists they need.
 
 ### What ships
 
-| Module   | Package                    | Priv? | Source |
-|----------|----------------------------|-------|--------|
-| GmsCore  | `com.google.android.gms`   | yes   | [microg/GmsCore releases](https://github.com/microg/GmsCore/releases) |
-| Phonesky | `com.android.vending`      | yes   | microg/GmsCore releases (Companion) |
-| GsfProxy | `com.google.android.gsf`   | no    | [SaeedDev94/GsfProxy releases](https://github.com/SaeedDev94/GsfProxy/releases) |
+| Module                    | Package                        | Priv? | Source |
+|---------------------------|--------------------------------|-------|--------|
+| GmsCore                   | `com.google.android.gms`       | yes   | [microg/GmsCore releases](https://github.com/microg/GmsCore/releases) |
+| Phonesky                  | `com.android.vending`          | yes   | microg/GmsCore releases (Companion) |
+| GsfProxy                  | `com.google.android.gsf`       | no    | [SaeedDev94/GsfProxy releases](https://github.com/SaeedDev94/GsfProxy/releases) |
+| AuroraStore               | `com.aurora.store`             | no    | [AuroraOSS/AuroraStore releases](https://gitlab.com/AuroraOSS/AuroraStore/-/releases) |
+| FDroid                    | `org.fdroid.fdroid`            | no    | [f-droid.org](https://f-droid.org/F-Droid.apk) |
+| FDroidPrivilegedExtension | `org.fdroid.fdroid.privileged` | yes   | [f-droid.org](https://f-droid.org/packages/org.fdroid.fdroid.privileged/) |
 
 GsfProxy is the SaeedDev94 fork because the original microG GsfProxy targets
 SDK 23; the fork targets 36 and ships uncompressed dex.
+
+### App stores
+
+Aurora Store and F-Droid are bundled for out-of-the-box app installs.
+
+- **Aurora Store** installs via the unprivileged `PackageInstaller` session API,
+  so each install/update shows a confirmation. It never uses the privileged
+  `INSTALL_PACKAGES` path, so shipping it as a privileged app buys nothing — it
+  is a regular app.
+- **F-Droid** pairs with the **F-Droid Privileged Extension**, a privileged app
+  holding `INSTALL_PACKAGES` / `DELETE_PACKAGES` (allowlisted in
+  `privapp-permissions-fdroid.xml`). With it present, F-Droid installs and
+  updates apps **unattended** — no per-app tap. The extension is signed with the
+  same key as the F-Droid client, which the client trusts by default, so no
+  extra pairing step is needed.
 
 ### Requirements
 

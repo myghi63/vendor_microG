@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Privileged permission allowlist for the F-Droid Privileged Extension.
+
+  These signature|privileged permissions let F-Droid install and update apps
+  unattended (no per-app "Install" tap). A privileged app requesting them
+  without an allowlist entry fails to boot on user builds
+  (ro.control_privapp_permissions=enforce).
+-->
+<permissions>
+    <privapp-permissions package="org.fdroid.fdroid.privileged">
+        <permission name="android.permission.INSTALL_PACKAGES" />
+        <permission name="android.permission.DELETE_PACKAGES" />
+    </privapp-permissions>
+</permissions>

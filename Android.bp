@@ -50,3 +50,55 @@ android_app_import {
         enabled: false,
     },
 }
+
+// -- App stores ---------------------------------------------------------------
+//
+// Aurora Store and the F-Droid client are regular (non-privileged) apps. Aurora
+// installs via the unprivileged PackageInstaller session API (it never uses the
+// privileged INSTALL_PACKAGES path, so making it privileged buys nothing). The
+// F-Droid client pairs with the F-Droid Privileged Extension below.
+//
+// F-Droid Privileged Extension is privileged: it holds INSTALL_PACKAGES /
+// DELETE_PACKAGES (allowlisted in permissions/privapp-permissions-fdroid.xml) so
+// F-Droid can install and update apps unattended, with no per-app confirmation.
+// It is signed with the same key as the F-Droid client, which the extension
+// trusts by default. Its dex is compressed, so skip the presigned-APK checks and
+// let PackageManager extract the dex at dexopt time (as with the microG priv-apps).
+
+android_app_import {
+    name: "AuroraStore",
+    owner: "microg",
+    apk: "proprietary/product/app/AuroraStore/AuroraStore.apk",
+    presigned: true,
+    preprocessed: true,
+    product_specific: true,
+    dex_preopt: {
+        enabled: false,
+    },
+}
+
+android_app_import {
+    name: "FDroid",
+    owner: "microg",
+    apk: "proprietary/product/app/FDroid/FDroid.apk",
+    presigned: true,
+    preprocessed: true,
+    product_specific: true,
+    dex_preopt: {
+        enabled: false,
+    },
+}
+
+android_app_import {
+    name: "FDroidPrivilegedExtension",
+    owner: "microg",
+    apk: "proprietary/product/priv-app/FDroidPrivilegedExtension/FDroidPrivilegedExtension.apk",
+    presigned: true,
+    preprocessed: true,
+    privileged: true,
+    product_specific: true,
+    dex_preopt: {
+        enabled: false,
+    },
+    skip_preprocessed_apk_checks: true,
+}
