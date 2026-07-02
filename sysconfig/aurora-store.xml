@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     SystemConfig grants for Aurora Store. Lands at /product/etc/sysconfig/.
-    Neither grant needs a privileged app.
-
-    app-link: marks Aurora as a system-linked app, so PackageManager
-    auto-approves all of its declared web hosts (play.google.com and
-    market.android.com) as verified App Links even though the APK does not set
-    android:autoVerify (DomainVerificationCollector treats every linked system
-    app as needing verification). Result: Play Store web links open in Aurora by
-    default instead of the browser.
 
     allow-in-power-save: adds Aurora to the device-idle power-save allowlist, so
     it is exempt from Doze / app-standby. This is what Settings shows as
     "Unrestricted" battery usage.
+
+    NOTE: there is deliberately no <app-link> here. That tag only auto-approves a
+    linked system app's *autoVerify* web domains (STATE_SYS_CONFIG in
+    DomainVerificationService.applyImmutableState, which is fed by
+    collectValidAutoVerifyDomains). Aurora targets SDK 36, so the RESTRICT_DOMAINS
+    compat change is enabled and DomainVerificationCollector.collectDomainsInternal
+    requires intentFilter.getAutoVerify()==true; the legacy "assume linked apps
+    need verification even if unmarked" bypass only applies to pre-S apps and does
+    not run here. Aurora's APK sets android:autoVerify on none of its
+    play.google.com / market.android.com filters, so <app-link> collects zero
+    domains and does nothing. Making Aurora the default handler for those hosts is
+    therefore a one-time manual step (Settings > Aurora > Open by default > add
+    the domains).
 -->
 <config>
-    <app-link package="com.aurora.store" />
     <allow-in-power-save package="com.aurora.store" />
 </config>
