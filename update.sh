@@ -37,6 +37,15 @@ FDROID_PRIV_VC=$(curl -fsSL "https://f-droid.org/api/v1/packages/org.fdroid.fdro
 FDROID_PRIV_URL="https://f-droid.org/repo/org.fdroid.fdroid.privileged_${FDROID_PRIV_VC}.apk"
 
 fetch "$GMS_URL" proprietary/product/priv-app/GmsCore/GmsCore.apk
+# GmsCore ships extractNativeLibs=true but is imported preprocessed, so Soong
+# never unpacks its JNI libs. Re-extract them into the app's lib dir so
+# nativeLibraryDir is populated at build time (common.mk copies them in). Without
+# this, apps that load a GmsCore library - e.g. Google Maps loading Cronet -
+# crash with UnsatisfiedLinkError. arm64 only (the target is arm64-v8a).
+GMS_LIBDIR=proprietary/product/priv-app/GmsCore/lib/arm64
+rm -rf "$GMS_LIBDIR" && mkdir -p "$GMS_LIBDIR"
+unzip -o -j proprietary/product/priv-app/GmsCore/GmsCore.apk 'lib/arm64-v8a/*.so' -d "$GMS_LIBDIR"
+
 fetch "$VND_URL" proprietary/product/priv-app/Phonesky/Phonesky.apk
 fetch "$GSF_URL" proprietary/product/app/GsfProxy/GsfProxy.apk
 fetch "$AURORA_URL"     proprietary/product/app/AuroraStore/AuroraStore.apk

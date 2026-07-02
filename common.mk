@@ -32,9 +32,28 @@ PRODUCT_COPY_FILES += \
     vendor/microG/permissions/privapp-permissions-fdroid.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-fdroid.xml \
     vendor/microG/permissions/default-permissions-microg.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/default-permissions/default-permissions-microg.xml
 
-# sysconfig: make Aurora the default handler for Play Store web links
-# (app-link) and exempt it from Doze / battery optimization (allow-in-power-save,
-# shown as "Unrestricted" in Settings). Neither needs a privileged app.
+# sysconfig: exempt Aurora and F-Droid from Doze / battery optimization
+# (allow-in-power-save, shown as "Unrestricted" in Settings). Neither needs a
+# privileged app.
 PRODUCT_COPY_FILES += \
     vendor/microG/sysconfig/aurora-store.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/aurora-store.xml \
     vendor/microG/sysconfig/fdroid.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/fdroid.xml
+
+# GmsCore JNI libraries.
+#
+# GmsCore.apk sets android:extractNativeLibs="true", so the platform expects its
+# native libs unpacked into the app's nativeLibraryDir
+# (/product/priv-app/GmsCore/lib/arm64). But the APK is imported with
+# preprocessed:true (required - it is presigned v2/v3, and letting Soong
+# zipalign/repack it would invalidate that signature), and Soong does not extract
+# JNI libs from a preprocessed prebuilt. The result is an empty lib dir: any app
+# that dlopen()s a GmsCore-provided library fails with UnsatisfiedLinkError. The
+# most visible casualty is Google Maps, which loads Cronet from Play Services
+# (libcronet.*.so lives in GmsCore, not in Maps) and crashes instantly on launch.
+#
+# Ship the libs pre-extracted into the lib dir so nativeLibraryDir is populated.
+# Wildcard-copied so a microG bump only needs the .so files refreshed (see
+# update.sh), not this list. arm64 only - the device is arm64-v8a.
+PRODUCT_COPY_FILES += $(foreach lib,\
+    $(wildcard vendor/microG/proprietary/product/priv-app/GmsCore/lib/arm64/*.so),\
+    $(lib):$(TARGET_COPY_OUT_PRODUCT)/priv-app/GmsCore/lib/arm64/$(notdir $(lib)))

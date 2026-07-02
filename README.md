@@ -18,6 +18,23 @@ system apps with the permission allowlists they need.
 GsfProxy is the SaeedDev94 fork because the original microG GsfProxy targets
 SDK 23; the fork targets 36 and ships uncompressed dex.
 
+### GmsCore native libraries
+
+GmsCore.apk sets `android:extractNativeLibs="true"`, so the platform expects its
+JNI libs unpacked into the app's `nativeLibraryDir`
+(`/product/priv-app/GmsCore/lib/arm64`). The APK is imported `preprocessed`
+(required: it is presigned v2/v3 and letting Soong zipalign/repack it would break
+that signature), and Soong does not extract JNI libs from a preprocessed
+prebuilt, so that dir would be empty. Any app that `dlopen()`s a GmsCore-provided
+library then fails with `UnsatisfiedLinkError` — most visibly **Google Maps**,
+which loads Cronet from Play Services (`libcronet.*.so` ships in GmsCore, not in
+Maps) and crashes instantly on launch.
+
+The libs are therefore pre-extracted into
+`proprietary/product/priv-app/GmsCore/lib/arm64/` and copied into the lib dir at
+build time by `common.mk` (wildcard, so a version bump only needs the `.so`
+refreshed — `update.sh` re-extracts them automatically). arm64 only.
+
 ### App stores
 
 Aurora Store and F-Droid are bundled for out-of-the-box app installs.
