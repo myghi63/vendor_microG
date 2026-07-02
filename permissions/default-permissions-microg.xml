@@ -29,7 +29,16 @@
     <exception package="com.aurora.store">
         <permission name="android.permission.POST_NOTIFICATIONS" fixed="false"/>
     </exception>
+    <!-- F-Droid: pre-grant every non-appop (dangerous runtime) permission it
+         requests. Normal perms are auto-granted at install; the appop specials
+         (MANAGE_EXTERNAL_STORAGE, WRITE_SETTINGS, REQUEST_INSTALL_PACKAGES)
+         cannot be granted here. -->
     <exception package="org.fdroid.fdroid">
         <permission name="android.permission.POST_NOTIFICATIONS" fixed="false"/>
+        <permission name="android.permission.CAMERA" fixed="false"/>
+        <permission name="android.permission.READ_EXTERNAL_STORAGE" fixed="false"/>
+        <permission name="android.permission.WRITE_EXTERNAL_STORAGE" fixed="false"/>
+        <permission name="android.permission.BLUETOOTH_CONNECT" fixed="false"/>
+        <permission name="android.permission.BLUETOOTH_SCAN" fixed="false"/>
     </exception>
 </exceptions>

@@ -36,4 +36,5 @@ PRODUCT_COPY_FILES += \
 # (app-link) and exempt it from Doze / battery optimization (allow-in-power-save,
 # shown as "Unrestricted" in Settings). Neither needs a privileged app.
 PRODUCT_COPY_FILES += \
-    vendor/microG/sysconfig/aurora-store.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/aurora-store.xml
+    vendor/microG/sysconfig/aurora-store.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/aurora-store.xml \
+    vendor/microG/sysconfig/fdroid.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/fdroid.xml

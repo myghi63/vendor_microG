@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SystemConfig grants for F-Droid. Lands at /product/etc/sysconfig/.
+
+    allow-in-power-save: exempts F-Droid from Doze / app-standby so its
+    background repo syncs and unattended updates are not deferred (Settings
+    shows this as "Unrestricted" battery usage).
+
+    NOTE: no <app-link> here on purpose. That tag is package-level (all-or-
+    nothing) and F-Droid also declares play.google.com and amazon.com in
+    browsable web filters, so linking it would hijack those hosts (including
+    play.google.com from Aurora). Approving only the f-droid.org host set is a
+    per-domain operation (pm set-app-links) that SystemConfig cannot express.
+-->
+<config>
+    <allow-in-power-save package="org.fdroid.fdroid" />
+</config>
