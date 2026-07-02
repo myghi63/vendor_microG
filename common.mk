@@ -31,3 +31,9 @@ PRODUCT_COPY_FILES += \
     vendor/microG/permissions/privapp-permissions-microg.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-microg.xml \
     vendor/microG/permissions/privapp-permissions-fdroid.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-fdroid.xml \
     vendor/microG/permissions/default-permissions-microg.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/default-permissions/default-permissions-microg.xml
+
+# sysconfig: make Aurora the default handler for Play Store web links
+# (app-link) and exempt it from Doze / battery optimization (allow-in-power-save,
+# shown as "Unrestricted" in Settings). Neither needs a privileged app.
+PRODUCT_COPY_FILES += \
+    vendor/microG/sysconfig/aurora-store.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/aurora-store.xml
