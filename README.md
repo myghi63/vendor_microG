@@ -39,10 +39,12 @@ refreshed — `update.sh` re-extracts them automatically). arm64 only.
 
 Aurora Store and F-Droid are bundled for out-of-the-box app installs.
 
-- **Aurora Store** installs via the unprivileged `PackageInstaller` session API,
-  so each install/update shows a confirmation. It never uses the privileged
-  `INSTALL_PACKAGES` path, so shipping it as a privileged app buys nothing — it
-  is a regular app. `sysconfig/aurora-store.xml` exempts it from battery
+- **Aurora Store** installs via the unprivileged `PackageInstaller` session API.
+  It never uses the privileged `INSTALL_PACKAGES` path, so shipping it as a
+  privileged app buys nothing — it is a regular app. The first install of an app
+  shows a confirmation, but Aurora requests `UPDATE_PACKAGES_WITHOUT_USER_ACTION`
+  and `ENFORCE_UPDATE_OWNERSHIP`, so *updates* to apps it installed itself (where
+  it holds update ownership) can go through without a prompt. `sysconfig/aurora-store.xml` exempts it from battery
   optimization (`allow-in-power-save`, shown as "Unrestricted"). It does **not**
   try to make Aurora the default handler for `play.google.com` /
   `market.android.com` links: the `<app-link>` tag only approves an app's

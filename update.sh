@@ -52,10 +52,21 @@ require_url "$GMS_URL" "GmsCore in microg/GmsCore@$GMS_TAG"
 require_url "$VND_URL" "Companion in microg/GmsCore@$GMS_TAG"
 require_url "$GSF_URL" "GsfProxy"
 
-# Aurora Store: latest non-preload/-hw release from the AuroraOSS GitLab project.
-AURORA_URL=$(curl -fsSL "https://gitlab.com/api/v4/projects/AuroraOSS%2FAuroraStore/releases" \
-    | grep -oE '"url":"[^"]+\.apk"' | cut -d'"' -f4 \
-    | grep -viE 'preload|-hw-' | head -1)
+# Aurora Store: newest release tag from the AuroraOSS GitLab project, mapped to
+# the canonical auroraoss.com download path.
+#
+# Do not read the APK link out of the releases API: since 4.8.1 the releases
+# carry an empty assets.links array and the APK links exist only as markdown in
+# .description. Scraping '"url":"…apk"' across the whole list therefore skips
+# every 4.8.x release and silently matches an *older* one that still has links
+# (that is how this tree ended up pinned to 4.7.5). Derive the URL from the tag
+# instead, and take the -preload / -hw variants' absence as given: the plain
+# AuroraStore-<tag>.apk path is the standard build.
+AURORA_TAG=$(curl -fsSL "https://gitlab.com/api/v4/projects/AuroraOSS%2FAuroraStore/releases?per_page=1" \
+    | jq -r '.[0].tag_name')
+[ -n "$AURORA_TAG" ] && [ "$AURORA_TAG" != null ] \
+    || { echo "error: could not resolve the newest Aurora Store tag" >&2; exit 1; }
+AURORA_URL="https://auroraoss.com/downloads/AuroraStore/Release/AuroraStore-${AURORA_TAG}.apk"
 
 # F-Droid client is served as a stable path; the Privileged Extension has to be
 # resolved to its current versionCode via the F-Droid API.
