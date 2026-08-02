@@ -99,6 +99,20 @@ spoofing, registration and the rest should be green.
 
 ### Updating
 
-Run `./update.sh` to pull the latest release APKs into `proprietary/` and print
-each APK's package id, signer and requested permissions so you can refresh the
-allowlists if microG's permission set changed.
+Run `./update.sh` to pull the release APKs into `proprietary/` and print each
+APK's package id, signer and requested permissions so you can refresh the
+allowlists if microG's permission set changed. Needs `curl`, `jq` and `unzip`.
+
+The microG release is **pinned** via `GMS_TAG` at the top of the script
+(currently `v0.3.16.252432`). Pinning is required for pre-releases: GitHub's
+`releases/latest` endpoint never returns them. To follow the newest *stable*
+release instead:
+
+    GMS_TAG=latest ./update.sh
+
+Assets are matched by name, anchored as `com.google.android.gms-<code>.apk` /
+`com.android.vending-<code>.apk`, which excludes the `-hw` (Huawei build — uses
+the `hms` maps flavor and ships **no** `libmapbox-gl.so`) and `-user`
+(unprivileged dev preview, different applicationId) variants. Do not relax those
+patterns; picking the wrong flavor here installs `com.android.vending` into the
+GmsCore slot and ships no microG Services at all.

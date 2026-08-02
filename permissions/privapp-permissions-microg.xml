@@ -22,6 +22,10 @@
         <permission name="android.permission.INTERACT_ACROSS_USERS"/>
         <permission name="android.permission.START_ACTIVITIES_FROM_BACKGROUND"/>
         <permission name="android.permission.MANAGE_USB"/>
+        <!-- DroidGuard (signature|privileged|development): without it DroidGuard
+             attestation fails, which breaks SafetyNet/Play Integrity users. New
+             in 0.3.16. -->
+        <permission name="android.permission.DUMP"/>
         <!-- Android 15/16 Credential Manager (signature|privileged): missing
              these boots the phone into a loop on user builds
              (ro.control_privapp_permissions=enforce). -->
