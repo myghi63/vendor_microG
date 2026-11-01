@@ -13,7 +13,6 @@ system apps with the permission allowlists they need.
 | GsfProxy                  | `com.google.android.gsf`       | no    | [SaeedDev94/GsfProxy releases](https://github.com/SaeedDev94/GsfProxy/releases) |
 | AuroraStore               | `com.aurora.store`             | no    | [AuroraOSS/AuroraStore releases](https://gitlab.com/AuroraOSS/AuroraStore/-/releases) |
 | FDroid                    | `org.fdroid.fdroid`            | no    | [f-droid.org](https://f-droid.org/F-Droid.apk) |
-| FDroidPrivilegedExtension | `org.fdroid.fdroid.privileged` | yes   | [f-droid.org](https://f-droid.org/packages/org.fdroid.fdroid.privileged/) |
 
 GsfProxy is the SaeedDev94 fork because the original microG GsfProxy targets
 SDK 23; the fork targets 36 and ships uncompressed dex.
@@ -39,24 +38,27 @@ refreshed — `update.sh` re-extracts them automatically). arm64 only.
 
 Aurora Store and F-Droid are bundled for out-of-the-box app installs.
 
-- **Aurora Store** installs via the unprivileged `PackageInstaller` session API.
-  It never uses the privileged `INSTALL_PACKAGES` path, so shipping it as a
-  privileged app buys nothing — it is a regular app. The first install of an app
-  shows a confirmation, but Aurora requests `UPDATE_PACKAGES_WITHOUT_USER_ACTION`
-  and `ENFORCE_UPDATE_OWNERSHIP`, so *updates* to apps it installed itself (where
-  it holds update ownership) can go through without a prompt. `sysconfig/aurora-store.xml` exempts it from battery
+- **Aurora Store** is a regular app with two relevant install paths, neither of
+  which needs it to be privileged. Its session installer uses the unprivileged
+  `PackageInstaller` API: the first install of an app shows a confirmation, but
+  Aurora requests `UPDATE_PACKAGES_WITHOUT_USER_ACTION` and
+  `ENFORCE_UPDATE_OWNERSHIP`, so *updates* to apps it installed itself (where it
+  holds update ownership) can go through without a prompt. Its optional microG
+  installer hands the install to the **Companion** (Phonesky), a privileged app
+  that holds `INSTALL_PACKAGES`. `sysconfig/aurora-store.xml` exempts it from battery
   optimization (`allow-in-power-save`, shown as "Unrestricted"). It does **not**
   try to make Aurora the default handler for `play.google.com` /
   `market.android.com` links: the `<app-link>` tag only approves an app's
   *autoVerify* web domains, and Aurora (targetSdk 36) declares none, so the tag
   would be a no-op. Setting Aurora as the link handler stays a one-time manual
   step (Settings > Aurora > Open by default).
-- **F-Droid** pairs with the **F-Droid Privileged Extension**, a privileged app
-  holding `INSTALL_PACKAGES` / `DELETE_PACKAGES` (allowlisted in
-  `privapp-permissions-fdroid.xml`). With it present, F-Droid installs and
-  updates apps **unattended** — no per-app tap. The extension is signed with the
-  same key as the F-Droid client, which the client trusts by default, so no
-  extra pairing step is needed.
+- **F-Droid** also installs via the `PackageInstaller` session API, as a regular
+  app. F-Droid 2.0 removed support for the **F-Droid Privileged Extension**, so
+  the extension is no longer shipped: the client would ignore it. As with Aurora's
+  session installer, the "install unknown apps" toggle is a one-time manual step, the first install
+  of an app shows a confirmation, and F-Droid requests
+  `UPDATE_PACKAGES_WITHOUT_USER_ACTION` and `ENFORCE_UPDATE_OWNERSHIP` for updates
+  to apps it installed itself.
 
 ### Requirements
 
@@ -106,7 +108,7 @@ APK's package id, signer and requested permissions so you can refresh the
 allowlists if microG's permission set changed. Needs `curl`, `jq` and `unzip`.
 
 The microG release is **pinned** via `GMS_TAG` at the top of the script
-(currently `v0.3.16.252432`). Pinning is required for pre-releases: GitHub's
+(currently `v0.3.17.252432`). Pinning is required for pre-releases: GitHub's
 `releases/latest` endpoint never returns them. To follow the newest *stable*
 release instead:
 

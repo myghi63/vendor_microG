@@ -23,8 +23,7 @@
         App stores: only POST_NOTIFICATIONS is a runtime perm worth pre-granting
         (update/download notifications). Aurora's "install unknown apps" gate is
         an AppOp, not a runtime perm, so it cannot be granted here and stays a
-        one-time manual toggle. F-Droid installs via the Privileged Extension and
-        needs no such toggle.
+        one-time manual toggle. The same applies to F-Droid.
     -->
     <exception package="com.aurora.store">
         <permission name="android.permission.POST_NOTIFICATIONS" fixed="false"/>
@@ -32,7 +31,8 @@
     <!-- F-Droid: pre-grant every non-appop (dangerous runtime) permission it
          requests. Normal perms are auto-granted at install; the appop specials
          (MANAGE_EXTERNAL_STORAGE, WRITE_SETTINGS, REQUEST_INSTALL_PACKAGES)
-         cannot be granted here. -->
+         cannot be granted here. ACCESS_LOCAL_NETWORK does not exist on older
+         platforms; DefaultPermissionGrantPolicy skips unknown permissions. -->
     <exception package="org.fdroid.fdroid">
         <permission name="android.permission.POST_NOTIFICATIONS" fixed="false"/>
         <permission name="android.permission.CAMERA" fixed="false"/>
@@ -40,5 +40,7 @@
         <permission name="android.permission.WRITE_EXTERNAL_STORAGE" fixed="false"/>
         <permission name="android.permission.BLUETOOTH_CONNECT" fixed="false"/>
         <permission name="android.permission.BLUETOOTH_SCAN" fixed="false"/>
+        <permission name="android.permission.BLUETOOTH_ADVERTISE" fixed="false"/>
+        <permission name="android.permission.ACCESS_LOCAL_NETWORK" fixed="false"/>
     </exception>
 </exceptions>

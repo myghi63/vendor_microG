@@ -15,21 +15,17 @@ PRODUCT_PACKAGES += \
     Phonesky \
     GsfProxy
 
-# App stores: Aurora Store and F-Droid (client + Privileged Extension). The
-# extension is privileged and lets F-Droid update apps unattended.
+# App stores: Aurora Store and F-Droid. Both are regular apps that install via
+# the PackageInstaller session API.
 PRODUCT_PACKAGES += \
     AuroraStore \
-    FDroid \
-    FDroidPrivilegedExtension
+    FDroid
 
 # privapp-permissions: signature|privileged perms for the privileged microG apps
 # (boot fails on user builds without this). default-permissions: auto-grant the
 # runtime perms so the user skips microG's in-app permission wizard.
-# The fdroid allowlist grants INSTALL_PACKAGES/DELETE_PACKAGES to the F-Droid
-# Privileged Extension (unattended installs/updates).
 PRODUCT_COPY_FILES += \
     vendor/microG/permissions/privapp-permissions-microg.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-microg.xml \
-    vendor/microG/permissions/privapp-permissions-fdroid.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-fdroid.xml \
     vendor/microG/permissions/default-permissions-microg.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/default-permissions/default-permissions-microg.xml
 
 # sysconfig: exempt Aurora and F-Droid from Doze / battery optimization

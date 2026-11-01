@@ -12,7 +12,7 @@ AAPT2="${AAPT2:-aapt2}"
 # Pinned microG release. GmsCore pre-releases are never returned by GitHub's
 # "latest" endpoint, so reaching one requires naming its tag. Set GMS_TAG=latest
 # to track the newest *stable* release instead.
-GMS_TAG="${GMS_TAG:-v0.3.16.252432}"
+GMS_TAG="${GMS_TAG:-v0.3.17.252432}"
 
 fetch() { # url dest
     echo ">> $2"
@@ -68,12 +68,8 @@ AURORA_TAG=$(curl -fsSL "https://gitlab.com/api/v4/projects/AuroraOSS%2FAuroraSt
     || { echo "error: could not resolve the newest Aurora Store tag" >&2; exit 1; }
 AURORA_URL="https://auroraoss.com/downloads/AuroraStore/Release/AuroraStore-${AURORA_TAG}.apk"
 
-# F-Droid client is served as a stable path; the Privileged Extension has to be
-# resolved to its current versionCode via the F-Droid API.
+# F-Droid client is served as a stable path.
 FDROID_URL="https://f-droid.org/F-Droid.apk"
-FDROID_PRIV_VC=$(curl -fsSL "https://f-droid.org/api/v1/packages/org.fdroid.fdroid.privileged" \
-    | grep -oE '"versionCode":[0-9]+' | cut -d: -f2 | sort -nr | head -1)
-FDROID_PRIV_URL="https://f-droid.org/repo/org.fdroid.fdroid.privileged_${FDROID_PRIV_VC}.apk"
 
 fetch "$GMS_URL" proprietary/product/priv-app/GmsCore/GmsCore.apk
 # GmsCore ships extractNativeLibs=true but is imported preprocessed, so Soong
@@ -98,7 +94,6 @@ fetch "$VND_URL" proprietary/product/priv-app/Phonesky/Phonesky.apk
 fetch "$GSF_URL" proprietary/product/app/GsfProxy/GsfProxy.apk
 fetch "$AURORA_URL"     proprietary/product/app/AuroraStore/AuroraStore.apk
 fetch "$FDROID_URL"     proprietary/product/app/FDroid/FDroid.apk
-fetch "$FDROID_PRIV_URL" proprietary/product/priv-app/FDroidPrivilegedExtension/FDroidPrivilegedExtension.apk
 
 echo
 for f in \
@@ -106,8 +101,7 @@ for f in \
     proprietary/product/priv-app/Phonesky/Phonesky.apk \
     proprietary/product/app/GsfProxy/GsfProxy.apk \
     proprietary/product/app/AuroraStore/AuroraStore.apk \
-    proprietary/product/app/FDroid/FDroid.apk \
-    proprietary/product/priv-app/FDroidPrivilegedExtension/FDroidPrivilegedExtension.apk; do
+    proprietary/product/app/FDroid/FDroid.apk; do
     echo "===== $f ====="
     "$AAPT2" dump badging "$f" 2>/dev/null | grep -E '^package:|targetSdk' || true
     keytool -printcert -jarfile "$f" 2>/dev/null | grep -iE 'Owner|SHA256:' | head -2 || true
