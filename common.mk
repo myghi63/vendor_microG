@@ -28,10 +28,10 @@ PRODUCT_COPY_FILES += \
     vendor/microG/permissions/privapp-permissions-microg.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-microg.xml \
     vendor/microG/permissions/default-permissions-microg.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/default-permissions/default-permissions-microg.xml
 
-# sysconfig: exempt Aurora and F-Droid from Doze / battery optimization
-# (allow-in-power-save, shown as "Unrestricted" in Settings). Neither needs a
-# privileged app.
+# sysconfig: exempt microG, Aurora and F-Droid from Doze / battery optimization
+# (allow-in-power-save, shown as "Unrestricted" in Settings).
 PRODUCT_COPY_FILES += \
+    vendor/microG/sysconfig/microg.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/microg.xml \
     vendor/microG/sysconfig/aurora-store.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/aurora-store.xml \
     vendor/microG/sysconfig/fdroid.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/fdroid.xml
 
