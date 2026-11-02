@@ -70,11 +70,6 @@ android_app_import {
     dex_preopt: {
         enabled: false,
     },
-    // Aurora's JNI libs are stored+aligned since 4.8.x (extractNativeLibs=false),
-    // but its dex is still compressed and the presigned check wants it
-    // uncompressed. Repacking would break the signature, so skip the check and
-    // let PackageManager extract the dex at dexopt time.
-    skip_preprocessed_apk_checks: true,
 }
 
 android_app_import {
