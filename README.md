@@ -108,7 +108,7 @@ APK's package id, signer and requested permissions so you can refresh the
 allowlists if microG's permission set changed. Needs `curl`, `jq` and `unzip`.
 
 The microG release is **pinned** via `GMS_TAG` at the top of the script
-(currently `v0.3.17.252432`). Pinning is required for pre-releases: GitHub's
+(currently `v0.3.18.252432`). Pinning is required for pre-releases: GitHub's
 `releases/latest` endpoint never returns them. To follow the newest *stable*
 release instead:
 

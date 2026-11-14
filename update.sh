@@ -12,7 +12,7 @@ AAPT2="${AAPT2:-aapt2}"
 # Pinned microG release. GmsCore pre-releases are never returned by GitHub's
 # "latest" endpoint, so reaching one requires naming its tag. Set GMS_TAG=latest
 # to track the newest *stable* release instead.
-GMS_TAG="${GMS_TAG:-v0.3.17.252432}"
+GMS_TAG="${GMS_TAG:-v0.3.18.252432}"
 
 fetch() { # url dest
     echo ">> $2"
