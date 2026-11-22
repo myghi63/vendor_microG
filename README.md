@@ -62,12 +62,26 @@ Aurora Store and F-Droid are bundled for out-of-the-box app installs.
 
 ### Requirements
 
-A ROM with **microG signature spoofing** built into the framework. crDroid and
-most Lineage-based trees have it: the framework returns Google's signature for
-`com.google.android.gms` / `com.android.vending` (by package name + a
-`fake-signature` metadata match), so no `FAKE_PACKAGE_SIGNATURE` permission or
-Xposed module is needed. Stock AOSP without that patch will not spoof and
-microG's self-check stays red.
+A ROM with **microG signature spoofing** built into the framework: the
+framework returns Google's signature for `com.google.android.gms` /
+`com.android.vending` (by package name + a `fake-signature` metadata match),
+so no `FAKE_PACKAGE_SIGNATURE` permission or Xposed module is needed. Stock
+AOSP without that patch will not spoof and microG's self-check stays red.
+
+crDroid ships it on every build variant; Lineage/AOSP gate it to debuggable
+builds. That means **only user / release-keys builds need a framework patch**,
+and this repo carries it:
+
+`patches/frameworks/base/0001-Allow-microG-signature-spoofing-on-user-builds.patch`
+drops the `isDebuggable()` gate from `MicrogUtils.isMicrogSigned` so GmsCore
+and the Companion signed with the real microG key are recognized on user
+builds too. `vendorsetup.sh` applies it to `frameworks/base` whenever
+`build/envsetup.sh` is sourced (envsetup scans `vendorsetup.sh` under
+`device/`, `vendor/` and `product/`; this repo lives in `vendor/`, so no
+manifest hook is needed). On userdebug/eng the patch changes nothing — spoofing
+is already allowed there, so applying it is a no-op. `repo sync` discards the
+applied commits on frameworks/base's detached HEAD: re-source envsetup
+afterwards and check for `FAILED to apply`.
 
 ### Use
 
