@@ -1,0 +1,25 @@
+From 77de4c1487d4be7e429a7987cf5b216b2560ad11 Mon Sep 17 00:00:00 2001
+From: Myghi63 <myghi63@disroot.org>
+Date: Sun, 1 Nov 2026 21:07:39 -0300
+Subject: [PATCH] Allow microG signature spoofing on user builds
+
+---
+diff --git a/core/java/com/android/internal/content/MicrogUtils.java b/core/java/com/android/internal/content/MicrogUtils.java
+index 71b32ff6bb24..06f874fa91e0 100644
+--- a/core/java/com/android/internal/content/MicrogUtils.java
++++ b/core/java/com/android/internal/content/MicrogUtils.java
+@@ -42,12 +42,11 @@ public final class MicrogUtils {
+     }
+ 
+     /**
+-     * Whether the package is a microG package signed with the real microG key. Always false on
+-     * non-debuggable builds.
++     * Whether the package is a microG package signed with the real microG key.
+      */
+     public static boolean isMicrogSigned(@NonNull AndroidPackage pkg) {
+         SigningDetails signingDetails = pkg.getSigningDetails();
+-        return isDebuggable() && isMicrogPackageName(pkg.getPackageName())
++        return isMicrogPackageName(pkg.getPackageName())
+                 && signingDetails != null
+                 && Signature.areExactMatch(signingDetails, new Signature[]{REAL_SIGNATURE});
+     }
