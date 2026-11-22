@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Exempt microG Services and Companion from Doze / battery optimization. -->
+<!-- Exempt microG Services, Companion/Phonesky and GsfProxy from Doze / battery
+     optimization. -->
 <config>
     <allow-in-power-save package="com.google.android.gms" />
     <allow-in-power-save package="com.android.vending" />
+    <allow-in-power-save package="com.google.android.gsf" />
 </config>
