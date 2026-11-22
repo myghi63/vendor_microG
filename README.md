@@ -147,5 +147,5 @@ GmsCore slot and ships no microG Services at all.
 checkado em `packages/apps/microg-permissions-helper` pelo manifest) é um app headless
 platform-signed que aplica o que XML nenhum alcança: AppOps de instalar-desconhecidos
 (Aurora/Companion/F-Droid), overlay (GmsCore) e domínios "abrir por padrão" aprovados
-(inclusive em massa para apps da allowlist `mass`). Config e regras no README do repo
+(inclusive blanket para apps fora da denylist `deny`). Config e regras no README do repo
 dele; allowlist de priv-app em `permissions/privapp-permissions-microg-helper.xml`.
