@@ -140,3 +140,12 @@ the `hms` maps flavor and ships **no** `libmapbox-gl.so`) and `-user`
 (unprivileged dev preview, different applicationId) variants. Do not relax those
 patterns; picking the wrong flavor here installs `com.android.vending` into the
 GmsCore slot and ships no microG Services at all.
+
+## permissions helper
+
+`microg-permissions-helper` (repo `Myghi63/android_packages_apps_microg-permissions-helper`,
+checkado em `packages/apps/microg-permissions-helper` pelo manifest) é um app headless
+platform-signed que aplica o que XML nenhum alcança: AppOps de instalar-desconhecidos
+(Aurora/Companion/F-Droid), overlay (GmsCore) e domínios "abrir por padrão" aprovados
+(inclusive em massa para apps da allowlist `mass`). Config e regras no README do repo
+dele; allowlist de priv-app em `permissions/privapp-permissions-microg-helper.xml`.

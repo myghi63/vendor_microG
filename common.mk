@@ -21,11 +21,20 @@ PRODUCT_PACKAGES += \
     AuroraStore \
     FDroid
 
+# Permissions helper (packages/apps/microg-permissions-helper, platform-signed
+# headless app): applies the defaults the default-permissions XML below cannot
+# express - AppOps modes (install-unknown for the stores, overlay for GmsCore)
+# and approved "open by default" web domains. Config lives in the app's
+# assets/config.json.
+PRODUCT_PACKAGES += \
+    microg-permissions-helper
+
 # privapp-permissions: signature|privileged perms for the privileged microG apps
 # (boot fails on user builds without this). default-permissions: auto-grant the
 # runtime perms so the user skips microG's in-app permission wizard.
 PRODUCT_COPY_FILES += \
     vendor/microG/permissions/privapp-permissions-microg.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-microg.xml \
+    vendor/microG/permissions/privapp-permissions-microg-helper.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-microg-helper.xml \
     vendor/microG/permissions/default-permissions-microg.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/default-permissions/default-permissions-microg.xml
 
 # sysconfig: exempt microG, Aurora and F-Droid from Doze / battery optimization

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Privileged-permission allowlist for the microG permissions helper
+    (packages/apps/microg-permissions-helper, platform-signed). Only the two
+    signature permissions it requests; normal perms (RECEIVE_BOOT_COMPLETED,
+    QUERY_ALL_PACKAGES) need no entry.
+-->
+<permissions>
+    <privapp-permissions package="com.myghi63.microgpermhelper">
+        <permission name="android.permission.MANAGE_APP_OPS_MODES"/>
+        <permission name="android.permission.UPDATE_DOMAIN_VERIFICATION_USER_SELECTION"/>
+    </privapp-permissions>
+</permissions>
