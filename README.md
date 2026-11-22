@@ -83,6 +83,12 @@ is already allowed there, so applying it is a no-op. `repo sync` discards the
 applied commits on frameworks/base's detached HEAD: re-source envsetup
 afterwards and check for `FAILED to apply`.
 
+On ROMs that already spoof on all variants (crDroid and derivatives) the patch
+is not needed: the reverse-check either skips it silently, or their different
+code there produces a single harmless `FAILED to apply` line. `git am` is
+atomic per patch, so the tree is never left partially modified and the build is
+unaffected either way.
+
 ### Use
 
 In your `device.mk` (or a common device makefile):
