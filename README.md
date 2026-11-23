@@ -60,3 +60,11 @@ harmless on crDroid. `repo sync` discards it; re-source envsetup and check for
 Pulls fresh APKs into `proprietary/` and prints each package's signer and
 requested permissions so the allowlists can be refreshed. Needs `curl`, `jq`
 and `unzip` (optionally `aapt2` / `keytool`).
+
+## License
+
+Apache-2.0 (`LICENSE`) for the wiring here: makefiles, `Android.bp`, scripts,
+permission/sysconfig XMLs and the frameworks patch (which derives from
+Apache-2.0 AOSP/LineageOS code). The bundled APKs remain under their upstream
+licenses: microG components (GmsCore, Phonesky, GsfProxy) Apache-2.0; Aurora
+Store and F-Droid GPLv3.
